@@ -76,9 +76,10 @@ Nasdaq also provides an indication of the fair price called the *reference price
 
 relect market liquidity and stock valuation
 
-**bid_ask_spread** = best_offer / best_bid - 1
+**Bid ask spread**, $BidAskSpread = BestOffer / BestBid - 1$
 
-**Weighted averaged price**, WAP = (bid_price_1 * ask_size_1 + ask_price_1 * bid_size_1) / (bid_size_1 + ask_size_1)
+**Weighted averaged price**
+$$WAP = \frac{BidPrice * AskSize + AskPrice * BidSize}{BidSize + AskSize}$$
 
 **log return**: how can we compare the price of a stock between yesterday and today?
 
@@ -94,21 +95,63 @@ $$\sigma = \sqrt{{\Sigma}_{t}r^{2}_{t-1, t}}$$
 
 ### Feature Engineering
 
-stock_id, data_id, imbalance_size, imbalance_buy_sell_flag, reference_price, matched_size, far_price, near_price, [bid/ask]_price, [bid/ask]_size, wap, seconds_in_bucket
+`stock_id`, `data_id`, `imbalance_size`, `imbalance_buy_sell_flag`, `reference_price`, `matched_size`, `far_price`, `near_price`, `[bid/ask]_price`, `[bid/ask]_size`, `wap`, `seconds_in_bucket`
 
 Create/transform features that might influence stock price movements.
 
-Common features to consider:
+1. Time-Based Features:
 
-- price change: diff between consecutive closing price
-- moving averages: e.g. 10-day, 50-day averages of closing prices
-- technical indicators: compute RSI (relative strength index), MACD (moving price convergence divergence) Bollinger Bands
-- lagged features: past values often impact future prices
-- volatility measures: e.g. historical volatility, implied volatility
+    Extract time-related information from the data_id or timestamp, such as day of the week, hour of the day, or minute of the hour. These features can capture potential patterns related to market hours, trading sessions, or daily fluctuations.
 
-### Data Preprocessing
+2. Moving Averages:
 
-Normalize if using linear regression etc.
+    Calculate various moving averages (e.g., 10-day, 50-day, 200-day) for the reference_price or other relevant price-related features. Moving averages can capture trends and smooth out short-term fluctuations.
+
+3. Volatility Measures:
+
+    Compute measures of price volatility, such as historical volatility or implied volatility, using features like wap or reference_price. Volatility can be an essential factor in stock price movements.
+
+4. Technical Indicators:
+
+    Calculate technical indicators commonly used in stock analysis, such as:
+    Relative Strength Index (RSI), Moving Average Convergence Divergence (MACD), Bollinger Bands, Stochastic Oscillator.\
+    These indicators can help capture price momentum and overbought/oversold conditions.
+
+5. Lagged Features:
+
+    Create lagged versions of relevant features. For instance, you can use the closing price or volume from the previous time steps as input features, as past values often influence future prices.
+
+6. Price Spread Features:
+
+    Compute features related to the spread between bid and ask prices. This could include measures like bid-ask spread or bid-ask ratio, which provide insights into market liquidity.
+
+7. Imbalance Ratio:
+
+    You already have an imbalance_size feature. You can create derived features related to order imbalances, such as the ratio of buy orders to sell orders (imbalance_buy_sell_ratio).
+
+8. Feature Interactions:
+
+    Explore interactions between different features. For example, you can calculate the product or ratio of two features to capture potential synergistic effects.
+
+9. Statistical Aggregations:
+
+    Compute statistical aggregations like mean, median, standard deviation, or percentile values for features over specific time windows. These aggregations can capture statistical properties of the data.
+
+10. Domain-Specific Features:
+
+    Consider domain-specific features that might be relevant to stock trading, such as economic indicators (e.g., interest rates, GDP growth) if available.
+
+#### Data Preprocessing
+
+1. One-Hot Encoding or Label Encoding:
+
+    If you have categorical features like imbalance_buy_sell_flag, you can use one-hot encoding or label encoding to represent them numerically for model compatibility.
+
+2. Normalization and Scaling:
+
+    Standardize or normalize your features to have zero mean and unit variance, especially if you are using models like linear regression.
+
+Carefully handle missing data, either through interpolation or imputation.
 
 **Time based splitting**:
 when splitting training and testing datasets, make sure to keep time sequence intact.
