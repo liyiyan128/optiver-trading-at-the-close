@@ -23,6 +23,22 @@ auction phase: reference price, matched volume, imbalnce
 On-close orders (MOC, LOC, IO) together with orders from the continuous phase contribute to auction volume and imbalance.
 The final price is determined to maximize the matched volume. Therefore, the volume to buy and to sell moves the final price.
 
+### Overview
+
+[Extensive EDA](https://www.kaggle.com/code/ravi20076/optiver-extensiveeda)
+
+- 200 stocks, 481 trading days
+- NaN in reference_price, matched_size, far_price, near_price, bid_price and wap\
+  in 132 rows across stocks 19, 101, 131. These nulls are all located in the same location, i.e. across the same rows.\
+  far_price, near_price have 55% NaN.
+- Not all stocks are traded on all days and all time steps.\
+  All sotcks end on date_id = 480 though some start late
+- Outliers are present in several stocks.
+
+- Several stocks are consistently underperforming with a downtrend.
+- It is evident that quite a few stocks belong to the same sector based on the plots, and the overall stocks belong to multiple sectors colectively.
+- 
+
 ## Background Knowledge
 
 Previous Optiver Kaggle Chanllenge: [Optiver Realized Volatility Prediction explained with intro to financial concepts](https://www.kaggle.com/code/jiashenliu/introduction-to-financial-concepts-and-data)
@@ -165,3 +181,5 @@ when splitting training and testing datasets, make sure to keep time sequence in
 ### Evaluation
 
 Metrics?
+
+Mean Absolute Error
