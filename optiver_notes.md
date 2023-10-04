@@ -21,10 +21,10 @@ Previous Optiver Kaggle [Optiver Realized Volatility Prediction explained with i
 Prerequisite:
 
 - Gradient boosting (LightGBM, XGBoost)
-- Neural networks (PyTorch, Tensorflow)
+  - [A gentle intro to gradient boosting](https://machinelearningmastery.com/gentle-introduction-gradient-boosting-algorithm-machine-learning/)
+- Neural networks (PyTorch, Keras)
 
 - Regularisation (l1, l2)
-
 - Cross-validation
 
 ## Dataset
@@ -189,7 +189,7 @@ when splitting training and testing datasets, make sure to keep time sequence in
 
 - LightGBM
 - XGBoost
-- LSTM (RNN)
+- [LSTM](http://colah.github.io/posts/2015-08-Understanding-LSTMs/), long short-term memory, recurrent neural network (RNN)
 
 ### Evaluation
 
