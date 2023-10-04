@@ -9,7 +9,23 @@ using data from the order book and the closing auction of the stock
 
 Information from the auction can be used to adjust prices, assess supply and demand dynamics, and identify trading opportunities
 
+Some useful material to look at:
+
 - [Optiver Trading At the Close intro](https://www.kaggle.com/code/tomforbes/optiver-trading-at-the-close-introduction)
+- [Extensive EDA](https://www.kaggle.com/code/ravi20076/optiver-extensiveeda)
+
+Previous Optiver Kaggle [Optiver Realized Volatility Prediction explained with intro to financial concepts](https://www.kaggle.com/competitions/optiver-realized-volatility-prediction/overview):
+- [1st place sol](https://www.kaggle.com/code/nyanpn/1st-place-public-2nd-place-solution)
+- [LGBM baseline, feature engineering](https://www.kaggle.com/code/alexioslyon/lgbm-baseline)
+
+Prerequisite:
+
+- Gradient boosting (LightGBM, XGBoost)
+- Neural networks (PyTorch, Tensorflow)
+
+- Regularisation (l1, l2)
+
+- Cross-validation
 
 ## Dataset
 
@@ -37,11 +53,8 @@ The final price is determined to maximize the matched volume. Therefore, the vol
 
 - Several stocks are consistently underperforming with a downtrend.
 - It is evident that quite a few stocks belong to the same sector based on the plots, and the overall stocks belong to multiple sectors colectively.
-- 
 
 ## Background Knowledge
-
-Previous Optiver Kaggle Chanllenge: [Optiver Realized Volatility Prediction explained with intro to financial concepts](https://www.kaggle.com/code/jiashenliu/introduction-to-financial-concepts-and-data)
 
 *Auction*: a mechanism for determing the price of a particular asset by allowing multiple buyers and sellers to interact directly in a controlled, regulated environmnet.
 
