@@ -17,9 +17,9 @@
 
 - Feature engineering, cross-validation
 - Make 10 - 20 submissions based on:
-  - https://www.kaggle.com/code/yuanzhezhou/baseline-lgb-xgb-and-catboost
-  - https://www.kaggle.com/code/renatoreggiani/optv-lightgbm
-  - https://www.kaggle.com/code/sohier/optiver-2023-basic-submission-demo
+  - [lgb xgb catboost](https://www.kaggle.com/code/yuanzhezhou/baseline-lgb-xgb-and-catboost)
+  - [feat eng + lgb](https://www.kaggle.com/code/renatoreggiani/optv-lightgbm)
+  - [submission demo](https://www.kaggle.com/code/sohier/optiver-2023-basic-submission-demo)
 - Model averaging
 
 Final ten minutes of the trading day, often characterised by heightened volatility and rapid price fluctuations.
@@ -32,6 +32,10 @@ using data from the order book and the closing auction of the stock
 Information from the auction can be used to adjust prices, assess supply and demand dynamics, and identify trading opportunities
 
 Some useful material to look at:
+
+- [Highlights of code and dicussion board](https://www.kaggle.com/competitions/optiver-trading-at-the-close/discussion/448920)
+
+- [Weights of the synthetic index](https://www.kaggle.com/competitions/optiver-trading-at-the-close/discussion/442851) --> feature based on index?
 
 - [Optiver Trading At the Close intro](https://www.kaggle.com/code/tomforbes/optiver-trading-at-the-close-introduction)
 - [Extensive EDA](https://www.kaggle.com/code/ravi20076/optiver-extensiveeda)
