@@ -15,7 +15,8 @@
 
 **TODO List**
 
-- Feature engineering, cross-validation
+- Feature engineering --> use [TA-Lib](https://ta-lib.org/)
+- Cross-validation
 - Make 10 - 20 submissions based on:
   - [lgb xgb catboost](https://www.kaggle.com/code/yuanzhezhou/baseline-lgb-xgb-and-catboost)
   - [feat eng + lgb](https://www.kaggle.com/code/renatoreggiani/optv-lightgbm)
