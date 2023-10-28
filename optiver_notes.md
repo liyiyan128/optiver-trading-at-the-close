@@ -1,5 +1,27 @@
 # Optivers - Trading at the Close
 
+- [Optivers - Trading at the Close](#optivers---trading-at-the-close)
+  - [Dataset](#dataset)
+    - [Overview](#overview)
+  - [Background Knowledge](#background-knowledge)
+    - [Auction order book](#auction-order-book)
+    - [Combined book](#combined-book)
+    - [Order book statistics](#order-book-statistics)
+  - [Plan](#plan)
+    - [Feature Engineering](#feature-engineering)
+      - [Data Preprocessing](#data-preprocessing)
+    - [Model Selection](#model-selection)
+    - [Evaluation](#evaluation)
+
+**TODO List**
+
+- Feature engineering, cross-validation
+- Make 10 - 20 submissions based on:
+  - https://www.kaggle.com/code/yuanzhezhou/baseline-lgb-xgb-and-catboost
+  - https://www.kaggle.com/code/renatoreggiani/optv-lightgbm
+  - https://www.kaggle.com/code/sohier/optiver-2023-basic-submission-demo
+- Model averaging
+
 Final ten minutes of the trading day, often characterised by heightened volatility and rapid price fluctuations.
 In the last ten minitues of Nasdaq exchange trading session, market makers like Optiver merge traditional order book data with auction book data.
 
