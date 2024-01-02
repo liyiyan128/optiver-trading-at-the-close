@@ -94,8 +94,8 @@ See [Memory Optimization Function with Data Type Conversion](https://www.kaggle.
 
 We produced two solutions. Single models are usually less prone to overfitting compared to ensemble models. However, ensemble models may provide better generalisation ability.
 
-1. [LightGBM Robust Single Model](https://github.com/liyiyan128/optiver-trading-at-the-close/blob/main/lgbm.ipynb).
-2. [LightGBM & MLP Ensemble Model](https://github.com/liyiyan128/optiver-trading-at-the-close/blob/main/lgbm_mlp.ipynb).
+1. [LightGBM Robust Single Model](https://github.com/liyiyan128/optiver-trading-at-the-close/blob/d5bc5e3458820dfee7bab1afe52d99306df3c98f/code/lgbm.ipynb).
+2. [LightGBM & MLP Ensemble Model](https://github.com/liyiyan128/optiver-trading-at-the-close/blob/d5bc5e3458820dfee7bab1afe52d99306df3c98f/code/lgbm_mlp.ipynb).
 
 In this competition, models are trained on historic data and are tested on latest real-time data. Therefore, the model generalisation ability can be crucial.
 
