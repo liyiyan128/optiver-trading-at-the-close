@@ -12,6 +12,7 @@ Contents:
   - [Model \& Inference](#model--inference)
     - [LightGBM](#lightgbm)
     - [MLP (multilayer perception)](#mlp-multilayer-perception)
+    - [Inference](#inference)
 
 ## Background
 
@@ -41,6 +42,16 @@ Our feature engineering process absorbs many ideas from the [code](https://www.k
 **Basic features**
 
 We first compute some common financial statistics and indicators (e.g. bid-ask spread, trading volume) to reflect liquidity, volatility, pressure, urgency etc.
+
+The market urgency defined below is the strongest feature found in the public kernel.
+```
+df["price_spread"] = df["ask_price"] - df["bid_price"]
+df["liquidity_imbalance"] = df.eval("(bid_size-ask_size)/(bid_size+ask_size)")
+df["market_urgency"] = df["price_spread"] * df["liquidity_imbalance"]
+
+df["market_urgency_v2"] = (df["ask_price"]+df["bid_price"])/2 - (df["bid_price"]*df["bid_size"]+df["ask_price"]*df["ask_size"]) / (df["bid_size"]+df["ask_size"])
+```
+See [Insight on market_urgency](https://www.kaggle.com/code/shangjianzhong/insight-on-market-urgency)
 
 **Imbalance features**
 
@@ -113,9 +124,17 @@ e.g. [5-Fold CV](https://www.kaggle.com/code/verracodeguacas/fold-cv) implemente
 
 To reduce notebook running time, we used pre-trained model weights (pickled) in the submission notebook.
 
-**LightGBM inference**
+### MLP (multilayer perception)
 
-Several tricks were implemented in the inference process to improve the model public score.
+A multilayer perceptron (MLP) is a neural network consisting of fully connected neurons. MLPs are able to distinguish data that is not linearly separable.
+MLPs serve as a foundation for many sophisticated neural network architectures.
+Theoretically, MLPs can approximate any continuous function given enough neurons and layers.
+
+![MLP](https://github.com/liyiyan128/optiver-trading-at-the-close/blob/main/figure_mlp.png)
+
+### Inference
+
+Several tricks can be implemented in the inference process to improve the model public score.
 
 - `zero_sum` post-processing
 
@@ -135,12 +154,5 @@ zero_sum is an implementation of [goto_conversion: Novel Conversion of Betting O
 
 - cache last 21 days
 
+Features are generated based on last 21 days data. This enables the accurate evaluation of lagged features and global features.
 
-
-### MLP (multilayer perception)
-
-A multilayer perceptron (MLP) is a neural network consisting of fully connected neurons. MLPs are able to distinguish data that is not linearly separable.
-MLPs serve as a foundation for many sophisticated neural network architectures.
-Theoretically, MLPs can approximate any continuous function given enough neurons and layers.
-
-![MLP](https://github.com/liyiyan128/optiver-trading-at-the-close/blob/main/figure_mlp.png)
