@@ -9,7 +9,7 @@ Contents:
   - [Background](#background)
   - [Dataset](#dataset)
   - [Feature Engineering](#feature-engineering)
-  - [LightGBM \& MLP](#lightgbm--mlp)
+  - [Model \& Inference](#model--inference)
     - [LightGBM](#lightgbm)
     - [MLP (multilayer perception)](#mlp-multilayer-perception)
 
@@ -90,7 +90,7 @@ This is also community work aimed at improving performance and reducing memory-r
 
 See [Memory Optimization Function with Data Type Conversion](https://www.kaggle.com/code/zulqarnainali/lgb-fine-tuned-explained#%F0%9F%9A%80-Memory-Optimization-Function-with-Data-Type-Conversion-%F0%9F%A7%B9).
 
-## LightGBM & MLP
+## Model & Inference
 
 We produced two solutions. Single models are usually less prone to overfitting compared to ensemble models. However, ensemble models may provide better generalisation ability.
 
@@ -103,11 +103,39 @@ In this competition, models are trained on historic data and are tested on lates
 
 LightGBM (light gradient-boosting machine) is a popular gradient boosting framework developed by Microsoft. LightGBM uses a histogram-based algorithm to split data, reducing memory usage and speeding up training. The decision trees are grown in a leaf-wise manner, rather than level-wise in traditional boosting algorithms. This approach can lead to more depth in trees, capturing complex patterns.
 
-**Model training and parameter tuning**
+**LightGBM training and fine-tuning**
 
-The dataset contains time series data. To avoid data leakage, we adopted time-based split (split data based on specific time points e.g. split_day=435) to separate the dataset into train and valid sets.
+Traditional k-fold might lead to look-ahead bias due to the autocorrelation inherent in financial time series data.
+To avoid data leakage, we adopted time-based split (split data based on specific time points e.g. split_day=435) to separate the dataset into train and valid sets.
 
-To reduce notebook running time, we used pre-trained model weights in the submission notebook.
+Some notebooks in the code board implemented k-fold cross-validation.
+e.g. [5-Fold CV](https://www.kaggle.com/code/verracodeguacas/fold-cv) implemented purged k-fold CV. The strategy is to divide the dataset into five distinct folds based on date_id. A purge period (a gap between training and validation sets) is introduced to prevent information leakage from validation set back into training set. For each fold, the model is trained on data occuring before the purge period and is validated on data following the purge period.
+
+To reduce notebook running time, we used pre-trained model weights (pickled) in the submission notebook.
+
+**LightGBM inference**
+
+Several tricks were implemented in the inference process to improve the model public score.
+
+- `zero_sum` post-processing
+
+```
+def zero_sum(prices, volumes):
+    std_error = np.sqrt(volumes)
+    step = np.sum(prices) / np.sum(std_error)
+    out = prices - std_error * step
+    return out
+```
+
+In gambling and economics, the [favourite-longshot bias](https://en.wikipedia.org/wiki/Favourite-longshot_bias) is an observed phenomenon where on average, bettors tend to overvalue longshots and relatively undervalue favourites. The favourite-longshot bias is not limited to gambling markets, it also exists in stock markets.
+
+zero_sum adjusts all predicted stock prices by the same units of standard error to ensure all predicted stock prices relative to the index price sum to zero. This post-processing attempts to consider the favourite-longshot bias by utilising the wider standard errors implied for predicted stock prices with low trade volume and vice versa.
+
+zero_sum is an implementation of [goto_conversion: Novel Conversion of Betting Odds to Probabilities](https://github.com/gotoConversion/goto_conversion/). See [goto_conversion + Optiver|Baseline|Models](https://www.kaggle.com/code/kaito510/goto-conversion-optiver-baseline-models).
+
+- cache last 21 days
+
+
 
 ### MLP (multilayer perception)
 
