@@ -65,7 +65,9 @@ From empirical experience, the imbalance features can bring significant improvem
 
 - Triplet imbalances:
 
-    Take three feature columns from the prices and sizes feature group, compute (max - mid) / (mid - min) (here min, mid, max are computed row-wise). Thanks again to the Kaggle community, this process is parallelised using numba by the [community work](https://www.kaggle.com/code/lblhandsome/optiver-robust-best-single-model/notebook).
+    Take three feature columns from the prices and sizes feature group, compute (max - mid) / (mid - min) (here min, mid, max are computed row-wise).
+
+The triplet imbalance ratio feature computation is [parallelised using numba](https://www.kaggle.com/code/lblhandsome/optiver-robust-best-single-model/notebook).
 
 Personally, I find some imbalance ratios difficult to interpret and have little meaning in finance. Some features are just trying out possible combinations in the hope of improving prediction ability. Based on public scores, the new features created indeed decorrelate the underlying complex information carried in the original data to some extent.
 
@@ -112,7 +114,7 @@ In this competition, models are trained on historic data and are tested on lates
 
 ### LightGBM
 
-LightGBM (light gradient-boosting machine) is a popular gradient boosting framework developed by Microsoft. LightGBM uses a histogram-based algorithm to split data, reducing memory usage and speeding up training. The decision trees are grown in a leaf-wise manner, rather than level-wise in traditional boosting algorithms. This approach can lead to more depth in trees, capturing complex patterns.
+LightGBM (light gradient-boosting machine) is a popular gradient boosting framework developed by Microsoft. LightGBM grows decision trees in a leaf-wise manner, rather than level-wise in traditional boosting algorithms.  It chooses the leaf that will yield the largest decrease in loss. This approach can lead to more depth in trees. LightGBM implements a histogram-based decision tree learning algorithm, which yields great advantages on efficiency and memory consumption. (XGBoost uses a sorted-based decision tree learning algorithm, which searches the best split point on sorted feature values.)
 
 **LightGBM training and fine-tuning**
 
@@ -121,6 +123,8 @@ To avoid data leakage, we adopted time-based split (split data based on specific
 
 Some notebooks in the code board implemented k-fold cross-validation.
 e.g. [5-Fold CV](https://www.kaggle.com/code/verracodeguacas/fold-cv) implemented purged k-fold CV. The strategy is to divide the dataset into five distinct folds based on date_id. A purge period (a gap between training and validation sets) is introduced to prevent information leakage from validation set back into training set. For each fold, the model is trained on data occuring before the purge period and is validated on data following the purge period.
+
+LightGBM
 
 To reduce notebook running time, we used pre-trained model weights (pickled) in the submission notebook.
 
@@ -136,7 +140,7 @@ Theoretically, MLPs can approximate any continuous function given enough neurons
 
 Several tricks can be implemented in the inference process to improve the model public score.
 
-- `zero_sum` post-processing
+**`zero_sum` post-processing**
 
 ```
 def zero_sum(prices, volumes):
@@ -152,7 +156,7 @@ zero_sum adjusts all predicted stock prices by the same units of standard error 
 
 zero_sum is an implementation of [goto_conversion: Novel Conversion of Betting Odds to Probabilities](https://github.com/gotoConversion/goto_conversion/). See [goto_conversion + Optiver|Baseline|Models](https://www.kaggle.com/code/kaito510/goto-conversion-optiver-baseline-models).
 
-- cache last 21 days
+**cache last 21 days**
 
-Features are generated based on last 21 days data. This enables the accurate evaluation of lagged features and global features.
+Features are generated based on cached last 21 days data. This enables the accurate evaluation of lagged features and global features.
 
