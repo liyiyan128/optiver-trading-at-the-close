@@ -124,7 +124,8 @@ To avoid data leakage, we adopted time-based split (split data based on specific
 Some notebooks in the code board implemented k-fold cross-validation.
 e.g. [5-Fold CV](https://www.kaggle.com/code/verracodeguacas/fold-cv) implemented purged k-fold CV. The strategy is to divide the dataset into five distinct folds based on date_id. A purge period (a gap between training and validation sets) is introduced to prevent information leakage from validation set back into training set. For each fold, the model is trained on data occuring before the purge period and is validated on data following the purge period.
 
-LightGBM
+Compared with depth-wise growth, LightGBM leaf-wise algorithm can converge much faster. However, the leaf-wise growth may be over-fitting if not used with the appropriate parameters.
+We can use [Optuna](https://optuna.org/) hyperparameter optimization framework to fine-tune our LightGBM model. See [LightGBM Hyperparameter Optimisation with Optuna](https://www.kaggle.com/code/eishkaran/optiver-lgbm-optuna#Hyperparameter-Optimization).
 
 To reduce notebook running time, we used pre-trained model weights (pickled) in the submission notebook.
 
