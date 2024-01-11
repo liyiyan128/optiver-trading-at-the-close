@@ -135,8 +135,6 @@ A multilayer perceptron (MLP) is a neural network consisting of fully connected 
 MLPs serve as a foundation for many sophisticated neural network architectures.
 Theoretically, MLPs can approximate any continuous function given enough neurons and layers.
 
-![MLP](https://github.com/liyiyan128/optiver-trading-at-the-close/blob/main/figure_mlp.png)
-
 **MLP architecture**
 
 Input: continuous and categorical features.
@@ -152,9 +150,9 @@ MLP architecture:
 
 ```mermaid
 graph TD;
-    Continuous --> Input;
-    Categorical -- embedding, flatten --> Input;
-    Input --> dense[Dense layers] -- normalisation, ReLU, dropout --> Output;
+    Continuous --> Input[MLP input];
+    Categorical -- Embedding, flatten --> Input;
+    Input --> dense[Dense layers] -- Normalisation, ReLU, dropout --> Output;
 ```
 
 ### Inference
