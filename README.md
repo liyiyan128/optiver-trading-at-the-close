@@ -137,6 +137,26 @@ Theoretically, MLPs can approximate any continuous function given enough neurons
 
 ![MLP](https://github.com/liyiyan128/optiver-trading-at-the-close/blob/main/figure_mlp.png)
 
+**MLP architecture**
+
+Input: continuous and categorical features.
+
+- Each categorical input is passed through an embedding layer.
+- The continuous input and the embedding layer output are concatenated to create a combined input for the MLP.
+
+
+MLP architecture:
+
+- Multiple dense layers (`hidden_units = [128,54]`) with batch normalization, ReLU activation, and dropout are applied sequentially.
+- L2 regularization is applied to the kernel weights.
+
+```mermaid
+graph TD;
+    Continuous-->Input;
+    Categorical-Embedding&Flatten->Input;
+    Input-->Dense layers: normalisation, ReLU, dropout-->Output;
+```
+
 ### Inference
 
 Several tricks can be implemented in the inference process to improve the model public score.
