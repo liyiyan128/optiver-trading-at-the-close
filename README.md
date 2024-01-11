@@ -152,9 +152,9 @@ MLP architecture:
 
 ```mermaid
 graph TD;
-    Continuous-->Input;
-    Categorical-Embedding&Flatten->Input;
-    Input-->Dense layers: normalisation, ReLU, dropout-->Output;
+    Continuous --> Input;
+    Categorical -- embedding, flatten --> Input;
+    Input --> dense[Dense layers] -- normalisation, ReLU, dropout --> Output;
 ```
 
 ### Inference
