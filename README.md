@@ -1,10 +1,10 @@
-# Imperial x Optiver | Public Board No. 55 - Silver Medal
+# Imperial x Optiver | Silver Medal
 
 ## Optiver - Trading at the Close
 
 Contents:
 
-- [Imperial x Optiver | Public Board No. 55 - Silver Medal](#imperial-x-optiver--public-board-no-55---silver-medal)
+- [Imperial x Optiver | Silver Medal](#imperial-x-optiver--silver-medal)
   - [Optiver - Trading at the Close](#optiver---trading-at-the-close)
   - [Background](#background)
   - [Dataset](#dataset)
@@ -39,7 +39,7 @@ In comparison, baseline LightGBM without feature engineering scores even lower t
 
 Our feature engineering process absorbs many ideas from the [code](https://www.kaggle.com/competitions/optiver-trading-at-the-close/code) and [discussion](https://www.kaggle.com/competitions/optiver-trading-at-the-close/discussion) board.
 
-**Basic features**
+**---Basic features---**
 
 We first compute some common financial statistics and indicators (e.g. bid-ask spread, trading volume) to reflect liquidity, volatility, pressure, urgency etc.
 
@@ -53,7 +53,7 @@ df["market_urgency_v2"] = (df["ask_price"]+df["bid_price"])/2 - (df["bid_price"]
 ```
 See [Insight on market_urgency](https://www.kaggle.com/code/shangjianzhong/insight-on-market-urgency)
 
-**Imbalance features**
+**---Imbalance features---**
 
 This idea comes from various notebooks from the code and the discussion board.
 
@@ -69,25 +69,27 @@ From empirical experience, the imbalance features can bring significant improvem
 
 The triplet imbalance ratio feature computation is [parallelised using numba](https://www.kaggle.com/code/lblhandsome/optiver-robust-best-single-model/notebook).
 
+---Imbalance ratios interpretation---
+
 Personally, I find some imbalance ratios difficult to interpret and have little meaning in finance. Some features are just trying out possible combinations in the hope of improving prediction ability. Based on public scores, the new features created indeed decorrelate the underlying complex information carried in the original data to some extent.
 
-**Lagged features**
+**---Lagged features---**
 
-Use `diff`, `shift`, `pct_change` in Pandas to compute lagged features for various features (prices, sizes) grouped by stock_id with various window periods (1, 2, 3, 10).
+Use `diff`, `shift`, `pct_change` in Pandas to compute lagged features for various features (prices, sizes) grouped by stock_id with various window periods (1, 2, 3, 10). Lagged features capture time series moving trends and periodic characteristics.
 
-**Statistical aggregations**
+**---Statistical aggregations---**
 
 Compute various statistics (mean, standard deviation, skew, kurt, max) for the prices and sizes feature group.
 
-**Temporal features**
+**---Temporal features---**
 
 Based on provided date_id, seconds_in_bucket, we create features indicating days of the week, seconds/minute during the closing auction.
 
-**Stock specific features**
+**---Stock specific features---**
 
 Group by stock_id, bid_price, ask_price, we create global stock-specific features such as median_size, std_price. These global stock-specific features reflect global market trends.
 
-**Synthetic index based features**
+**---Synthetic index based features---**
 
 The competition goal is to predict the future price movements of stocks relative to the price future price movement of a synthetic index composed of NASDAQ-listed stocks.
 
@@ -97,7 +99,7 @@ It turns out that the weights of the synthetic index can be rebuilt by applying 
 
 - Group by time_id, weighted_wap, further features such as index wap can be created.
 
-**Memory optimisation**
+**---Memory optimisation---**
 
 This is also community work aimed at improving performance and reducing memory-related issues. The original dataset contains various data types (`int8`, `int16`, `float32` etc.). The dataset storage can be optimised by converting columns to the most memory-efficient data types.
 
@@ -116,7 +118,7 @@ In this competition, models are trained on historic data and are tested on lates
 
 LightGBM (light gradient-boosting machine) is a popular gradient boosting framework developed by Microsoft. LightGBM grows decision trees in a leaf-wise manner, rather than level-wise in traditional boosting algorithms.  It chooses the leaf that will yield the largest decrease in loss. This approach can lead to more depth in trees. LightGBM implements a histogram-based decision tree learning algorithm, which yields great advantages on efficiency and memory consumption. (XGBoost uses a sorted-based decision tree learning algorithm, which searches the best split point on sorted feature values.)
 
-**LightGBM training and fine-tuning**
+**---LightGBM training and fine-tuning---**
 
 Traditional k-fold might lead to look-ahead bias due to the autocorrelation inherent in financial time series data.
 To avoid data leakage, we adopted time-based split (split data based on specific time points e.g. split_day=435) to separate the dataset into train and valid sets.
@@ -135,15 +137,12 @@ A multilayer perceptron (MLP) is a neural network consisting of fully connected 
 MLPs serve as a foundation for many sophisticated neural network architectures.
 Theoretically, MLPs can approximate any continuous function given enough neurons and layers.
 
-**MLP architecture**
+**---MLP architecture---**
 
 Input: continuous and categorical features.
 
 - Each categorical input is passed through an embedding layer.
 - The continuous input and the embedding layer output are concatenated to create a combined input for the MLP.
-
-
-MLP architecture:
 
 - Multiple dense layers (`hidden_units = [128,54]`) with batch normalization, ReLU activation, and dropout are applied sequentially.
 - L2 regularization is applied to the kernel weights.
@@ -159,7 +158,7 @@ graph TD;
 
 Several tricks can be implemented in the inference process to improve the model public score.
 
-**`zero_sum` post-processing**
+**---`zero_sum` post-processing---**
 
 ```
 def zero_sum(prices, volumes):
@@ -175,7 +174,7 @@ zero_sum adjusts all predicted stock prices by the same units of standard error 
 
 zero_sum is an implementation of [goto_conversion: Novel Conversion of Betting Odds to Probabilities](https://github.com/gotoConversion/goto_conversion/). See [goto_conversion + Optiver|Baseline|Models](https://www.kaggle.com/code/kaito510/goto-conversion-optiver-baseline-models).
 
-**cache last 21 days**
+**---cache last 21 days---**
 
 Features are generated based on cached last 21 days data. This enables the accurate evaluation of lagged features and global features.
 
